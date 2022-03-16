@@ -1,3 +1,27 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import User, Order, Dish, Price
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = [
+        'username',
+        'email'
+
+    ]
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Price)
+class PriceAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Dish)
+class DishAdmin(admin.ModelAdmin):
+    pass
