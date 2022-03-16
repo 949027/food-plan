@@ -1,3 +1,4 @@
+beautifulsoup4==4.10.0
 Django==4.0.3
 environs==9.5.0
 Pillow==9.0.1
