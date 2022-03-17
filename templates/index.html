@@ -14,10 +14,16 @@
     <header>
         <nav class="navbar navbar-light fixed-top navbar__opacity">
             <div class="container">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="{% url 'start_page' %}">
                     <img src="{% static 'img/logo.8d8f24edbb5f.svg' %}" height="55" width="189" alt="">
                 </a>
-                <a class="btn btn-outline-success foodplan_green foodplan__border_green" href="{% url 'login'%}">Войти</a>
+                {% if not user.is_authenticated %}
+                    <a class="btn btn-outline-success foodplan_green foodplan__border_green" href="{% url 'registration'%}">Зарегистрироваться</a>
+                    <a class="btn btn-outline-success foodplan_green foodplan__border_green" href="{% url 'login'%}">Войти</a>
+                {% else %}
+                    <a class="btn btn-outline-success foodplan_green foodplan__border_green" href="{% url 'profile'%}">Личный кабинет</a>
+                    <a class="btn btn-outline-success foodplan_green foodplan__border_green" href="{% url 'logout'%}">Выйти</a>                   
+                {% endif %}
             </div>
         </nav>
     </header>

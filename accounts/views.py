@@ -1,17 +1,14 @@
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import logout
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import forms
 from django.contrib.auth.decorators import login_required
+from django.views.generic.edit import CreateView
 
-
-# class LoginUserForm(AuthenticationForm):
-#     username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-control'}))
-#     password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -30,18 +27,19 @@ class LoginForm(forms.Form):
     )
 
 
-class LoginUser(auth_views.LoginView):
-    # form_class = LoginUserForm
-    # form_class = AuthenticationForm
-    # template_name = 'auth.html'
- 
-    # def get_user_context(self, *, object_list=None, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     c_def = self.get_user_context(title="Авторизация")
-    #     return dict(list(context.items()) + list(c_def.items()))
+class RegisterationForm(UserCreationForm):
+    username = forms.CharField(label='Имя', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.CharField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    password2 = forms.CharField(label='Подтверждение пароля', widget=forms.PasswordInput(attrs={'class': 'form-control'}))    
 
-    # def get_success_url(self):
-    #     return reverse_lazy('profile')
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')
+
+
+class LoginUser(auth_views.LoginView):
+
     def get(self, request, *args, **kwargs):
         form = LoginForm()
         return render(request, "auth.html", context={
@@ -60,14 +58,25 @@ class LoginUser(auth_views.LoginView):
                 login(request, user)
                 return redirect("profile")
 
-        # return render(request, "login.html", context={
-        #     'form': form,
-        #     'ivalid': True,
-        # })
-
 
 class LogoutUser(auth_views.LogoutView):
     next_page = reverse_lazy('start_page')
+
+
+class UserCreateView(CreateView):
+    form_class = RegisterationForm
+    template_name = 'registration.html'
+
+    def __init__(self):
+        self.object = None
+
+    def get_success_url(self):
+        return reverse_lazy('login')
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('profile')
 
 
 @login_required
