@@ -111,7 +111,7 @@ def put_test_data_to_db(receipts):
             calories=receipt["receipt_nutritional_value"],
             guide=receipt["receipt_guide"],
         )
-        for ingredient in receipts["receipt_ingredients"]:
+        for ingredient in receipt["receipt_ingredients"]:
             amount, measurement_unit = ingredient[1].split(" ", 1)
             Dishitems.objects.create(
                 dish=dish,
@@ -127,9 +127,19 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         receipts_urls = [
             "https://www.povarenok.ru/recipes/dishes/first/?searchid=28",
+            "https://www.povarenok.ru/recipes/dishes/main/?searchid=66",
+            "https://www.povarenok.ru/recipes/dishes/starter/?searchid=1064",
+            "https://www.povarenok.ru/recipes/dishes/bakery/?searchid=318",
+            "https://www.povarenok.ru/recipes/dishes/sweet/?searchid=322",
+            "https://www.povarenok.ru/recipes/dishes/drink/?searchid=525",
+            "https://www.povarenok.ru/recipes/dishes/other/?searchid=510",
+            "https://www.povarenok.ru/recipes/dishes/main/?searchid=72",
+            "https://www.povarenok.ru/recipes/dishes/main/?searchid=97",
+            "https://www.povarenok.ru/recipes/dishes/main/?searchid=165",
         ]
 
         for receipts_url in receipts_urls:
+            print(receipts_url)
             receipts_url_response = requests.get(receipts_url)
             receipts_url_response.raise_for_status()
 
