@@ -59,6 +59,10 @@ class Dish(models.Model):
         blank=True,
         null=True,
     )
+    guide = models.TextField(
+        "Инструкция",
+        blank=True,
+    )
 
     class Meta:
         verbose_name = "рецепт"
