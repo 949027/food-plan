@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 ORDER_DURATION = [(3, "3 мес"), (12, "12 мес")]
