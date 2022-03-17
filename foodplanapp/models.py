@@ -30,13 +30,11 @@ class Order(models.Model):
     )
     total_price = models.IntegerField("Стоимость подписки")
     user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        verbose_name='Пользователь'
+        User, on_delete=models.CASCADE, verbose_name="Пользователь"
     )
 
     def __str__(self):
-        return f'Заказ №{self.id}'
+        return f"Заказ №{self.id}"
 
 
 class Dish(models.Model):
@@ -61,6 +59,10 @@ class Dish(models.Model):
     guide = models.TextField(
         "Инструкция",
         blank=True,
+    )
+    active = models.BooleanField(
+        "Активный",
+        default=True,
     )
 
     class Meta:
