@@ -3,6 +3,11 @@ from django.contrib import admin
 from .models import Order, Dish, Price, Dishitems
 
 
+class DishitemsInline(admin.TabularInline):
+    model = Dishitems
+    extra = 0
+
+
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     pass
@@ -15,7 +20,7 @@ class PriceAdmin(admin.ModelAdmin):
 
 @admin.register(Dish)
 class DishAdmin(admin.ModelAdmin):
-    pass
+    inlines = [DishitemsInline]
 
 
 @admin.register(Dishitems)
