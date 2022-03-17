@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Order, Dish, Price
+from .models import Order, Dish, Price, Dishitems
 
 
 @admin.register(Order)
@@ -15,4 +15,9 @@ class PriceAdmin(admin.ModelAdmin):
 
 @admin.register(Dish)
 class DishAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Dishitems)
+class DishitemsAdmin(admin.ModelAdmin):
     pass
