@@ -50,9 +50,10 @@ class Dish(models.Model):
         "Изображение",
         null=True,
     )
-    calories = models.IntegerField(
+    calories = models.FloatField(
         "Калорийность, ккал",
         blank=True,
+        null=True,
     )
     weight = models.IntegerField(
         "Вес, г",
