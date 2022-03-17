@@ -1,11 +1,6 @@
 from django.contrib import admin
 
-from .models import User, Order, Dish, Price, Dishitems
-
-
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ["username", "email"]
+from .models import Order, Dish, Price, Dishitems
 
 
 @admin.register(Order)

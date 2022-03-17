@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 from django.db import models
 
 ORDER_DURATION = [(3, "3 мес"), (12, "12 мес")]
@@ -10,10 +10,6 @@ class Price(models.Model):
     new_year_menu = models.IntegerField("Доплата за новогоднее меню, %")
     allergy = models.IntegerField("Доплата за гипоаллергенное меню, %")
     promo_code = models.IntegerField("Скидка за промокод, %")
-
-
-class User(AbstractUser):
-    pass
 
 
 class Order(models.Model):
@@ -34,11 +30,13 @@ class Order(models.Model):
     )
     total_price = models.IntegerField("Стоимость подписки")
     user = models.ForeignKey(
-        "User", on_delete=models.CASCADE, verbose_name="Пользователь"
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='Пользователь'
     )
 
     def __str__(self):
-        return self.user.username
+        return f'Заказ №{self.id}'
 
 
 class Dish(models.Model):
