@@ -139,7 +139,6 @@ class Command(BaseCommand):
         ]
 
         for receipts_url in receipts_urls:
-            print(receipts_url)
             receipts_url_response = requests.get(receipts_url)
             receipts_url_response.raise_for_status()
 
