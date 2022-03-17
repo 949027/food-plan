@@ -6,6 +6,7 @@ from django.core.management.base import BaseCommand
 
 def parse_receipt_pages(response):
     receipts = []
+
     soup = BeautifulSoup(response.text, "lxml")
 
     receipt_urls = [
@@ -14,6 +15,8 @@ def parse_receipt_pages(response):
     ]
 
     for receipt_url in receipt_urls:
+        receipt_guide = ""
+
         response = requests.get(receipt_url)
         response.raise_for_status()
 
@@ -41,10 +44,21 @@ def parse_receipt_pages(response):
             "div[id*=nae-value-bl] table tr"
         )
 
+        nutritional_table = receipt_soup.find("table")
+        need_row = nutritional_table.find_all("tr")[1]
+        columns = need_row.find_all("td")
+        receipt_nutritional_value = columns[0].find("strong").text.strip()
+
+        receipt_guide_rows = receipt_soup.select("div.cooking-bl div p")
+        for receipt_guide_row in receipt_guide_rows:
+            receipt_guide += "".join(receipt_guide_row.text)
+
         receipt_attributes = {
             "receipt_name": receipt_name,
             "receipt_image": receipt_image,
             "receipt_ingredients": receipt_ingredients,
+            "receipt_nutritional_value": receipt_nutritional_value,
+            "receipt_guide": receipt_guide,
         }
 
         receipts.append(receipt_attributes)
@@ -65,4 +79,4 @@ class Command(BaseCommand):
 
         soup_receipts = parse_receipt_pages(soup_receipts_url_response)
 
-        # print(soup_receipts)
+        print(soup_receipts)
