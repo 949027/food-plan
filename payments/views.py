@@ -12,6 +12,7 @@ def payment(request, order_id):
     Configuration.account_id = settings.SHOP_ID
     Configuration.secret_key = settings.SHOP_TOKEN
     order = Order.objects.get(id=order_id)
+    
     payment = Payment.create({
         "amount": {
             "value": order.total_price,
@@ -26,7 +27,7 @@ def payment(request, order_id):
         "metadata": {"order_id": order_id},
     }, uuid.uuid4())
 
-    OrderPayment.object.create(
+    order_payment = OrderPayment.objects.create(
         payment_id=payment.id,
         order=order,
         created_at=payment.created_at,
@@ -41,6 +42,6 @@ def payment(request, order_id):
 
 
 def complete_payment(request, order_id):
-    order_payment = Order.object.get(order__id=order_id).payments.first()
+    order_payment = Order.object.get(id=order_id).payments.first()
     payment = Payment.find_one(order_payment.payment_id)
     return HttpResponse(payment)
