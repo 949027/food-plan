@@ -3,6 +3,7 @@ from django.urls import reverse
 from yookassa import Configuration, Payment
 from django.conf import settings
 import uuid
+from urllib.parse import urljoin
 
 from .models import OrderPayment
 
@@ -14,6 +15,11 @@ def payment(request, order_id):
     Configuration.secret_key = settings.SHOP_TOKEN
     order = Order.objects.get(id=order_id)
     
+    return_url = urljoin(
+        request.build_absolute_uri(),
+        reverse(complete_payment, kwargs={"order_id": order_id})
+    )
+
     payment = Payment.create({
         "amount": {
             "value": order.total_price,
@@ -21,14 +27,14 @@ def payment(request, order_id):
         },
         "confirmation": {
             "type": "redirect",
-            "return_url": f"http://82.148.16.182/payment/complete/{order_id}",
+            "return_url": return_url,
         },
         "capture": True,
         "description": f"Заказ №{order_id}",
         "metadata": {"order_id": order_id},
     }, uuid.uuid4())
 
-    order_payment = OrderPayment.objects.create(
+    OrderPayment.objects.create(
         payment_id=payment.id,
         order=order,
         created_at=payment.created_at,
@@ -44,10 +50,12 @@ def payment(request, order_id):
 
 def complete_payment(request, order_id):
     order_payment = Order.objects.get(id=order_id).payments.first()
+    
     Configuration.account_id = settings.SHOP_ID
     Configuration.secret_key = settings.SHOP_TOKEN
     payment = Payment.find_one(order_payment.payment_id)
+    
     order_payment.status = payment.status
     order_payment.is_paid = payment.paid
     order_payment.save()
-    return redirect(reverse('profile'))
+    return redirect(reverse("profile"))
