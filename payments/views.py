@@ -1,19 +1,20 @@
-from django.shortcuts import redirect, get_or_create, HttpResponse
+from django.shortcuts import redirect, HttpResponse
 from yookassa import Configuration, Payment
 from django.conf import settings
 import uuid
 
 from .models import OrderPayment
 
-from foodplanapp import Order
+from foodplanapp.models import Order
 
 
 def payment(request, order_id):
     Configuration.account_id = settings.SHOP_ID
     Configuration.secret_key = settings.SHOP_TOKEN
+    order = Order.objects.get(id=order_id)
     payment = Payment.create({
         "amount": {
-            "value": "100.00",
+            "value": order.total_price,
             "currency": "RUB"
         },
         "confirmation": {
@@ -25,9 +26,9 @@ def payment(request, order_id):
         "metadata": {"order_id": order_id},
     }, uuid.uuid4())
 
-    OrderPayment.object.get_or_create(
+    OrderPayment.object.create(
         payment_id=payment.id,
-        order=Order.object.get(order__id=order_id),
+        order=order,
         created_at=payment.created_at,
         description=payment.description,
         status=payment.status,

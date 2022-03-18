@@ -9,13 +9,14 @@ class OrderPayment(models.Model):
         Order,
         verbose_name="Заказ к оплате",
         related_name="payments",
+	on_delete=models.CASCADE,
     )
     created_at = models.DateTimeField("Дата создания")
-    description = models.CharField("Назначение платежа")
-    status = models.CharField("Статус платежа")
+    description = models.CharField("Назначение платежа", max_length=100)
+    status = models.CharField("Статус платежа", max_length=30)
     is_test = models.BooleanField("Тестовый платеж?")
     payment_amount = models.IntegerField("Сумма платежа")
-    payment_currency = models.CharField("Валюта платежа")
+    payment_currency = models.CharField("Валюта платежа", max_length=10)
     is_paid = models.BooleanField("Оплачен?")
 
     def __str__(self):

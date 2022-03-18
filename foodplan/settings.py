@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "foodplanapp.apps.FoodplanappConfig",
     "accounts.apps.AccountsConfig",
+    "payments.apps.PaymentsConfig",
 ]
 
 MIDDLEWARE = [
