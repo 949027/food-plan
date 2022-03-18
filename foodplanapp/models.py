@@ -81,6 +81,7 @@ class Dish(models.Model):
         choices=MENU_TYPE,
         max_length=100,
         default="classic",
+        db_index=True,
     )
     allergy1 = models.BooleanField(
         "Аллергия 1",
