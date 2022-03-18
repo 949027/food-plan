@@ -19,6 +19,8 @@ from django.urls import path, include
 from django.shortcuts import render
 
 from . import settings
+from foodplanapp import views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +28,5 @@ urlpatterns = [
     path('food/', include("foodplanapp.urls")),  # TODO: выбрать подходящий url вместо food
     path('user/', include("accounts.urls")),
     path('payment/', include("payments.urls")),
+    path('order/', views.order, name='order'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

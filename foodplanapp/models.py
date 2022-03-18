@@ -2,17 +2,28 @@ from django.contrib.auth.models import User
 from django.db import models
 
 ORDER_DURATION = [(3, "3 мес"), (12, "12 мес")]
+MENU_TYPE = [('classic', "Классическое меню"),
+             ('low_calorie', "Низкокалорийное меню"),
+             ('vegan', "Вегетарианское меню"),
+             ('keto', "Кето меню"),
+             ]
 
 
 class Price(models.Model):
-    start_price = models.IntegerField("Месяц подписки, руб")
-    meal = models.IntegerField("Доплата за каждый прием пищи, %")
-    new_year_menu = models.IntegerField("Доплата за новогоднее меню, %")
-    allergy = models.IntegerField("Доплата за гипоаллергенное меню, %")
-    promo_code = models.IntegerField("Скидка за промокод, %")
+    classic_menu = models.IntegerField("Классическое меню, руб/мес")
+    low_calorie_menu = models.IntegerField("Низкокалорийное меню, руб/мес")
+    vegan_menu = models.IntegerField("Вегетарианское меню, руб/мес")
+    keto_menu = models.IntegerField("Кето меню, руб/мес")
+    meal = models.IntegerField("Доплата за каждый прием пищи, руб")
+    new_year_menu = models.IntegerField("Доплата за новогоднее меню, руб")
+    allergy = models.IntegerField("Доплата за гипоаллергенное меню, руб")
+    promo_code = models.IntegerField("Скидка за промокод, руб")
 
 
 class Order(models.Model):
+    menu_type = models.CharField(
+        "Тип меню", choices=MENU_TYPE, max_length=100, default='classic'
+    )
     duration = models.IntegerField(
         "Срок подписки, мес", choices=ORDER_DURATION
     )
