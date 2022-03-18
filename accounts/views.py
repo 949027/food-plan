@@ -12,7 +12,7 @@ class LoginUser(auth_views.LoginView):
 
     def get(self, request, *args, **kwargs):
         form = LoginForm()
-        return render(request, "auth.html", context={
+        return render(request, "accounts/auth.html", context={
             'form': form
         })
 
@@ -35,7 +35,7 @@ class LogoutUser(auth_views.LogoutView):
 
 class UserCreateView(CreateView):
     form_class = RegistrationForm
-    template_name = 'registration.html'
+    template_name = 'accounts/registration.html'
 
     def __init__(self):
         self.object = None
@@ -51,5 +51,5 @@ class UserCreateView(CreateView):
 
 @login_required
 def user_profile(request):
-    return render(request, 'lk.html', 
+    return render(request, 'accounts/lk.html', 
                   context={'username': request.user.get_username()})
