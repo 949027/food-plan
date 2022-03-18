@@ -1,3 +1,4 @@
+
 """
 Django settings for foodplan project.
 
@@ -142,3 +143,6 @@ MEDIA_URL = "/media/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 #AUTH_USER_MODEL = 'foodplanapp.User'
+
+SHOP_ID = env("YOOKASSA_SHOP_ID")
+SHOP_TOKEN = env("YOOKASSA_SHOP_TOKEN")
