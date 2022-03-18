@@ -1,9 +1,11 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 from .forms import OrderForm
 from .models import Price
 
 
+@login_required
 def order(request):
     total_price = 0
     if request.method == 'POST':
@@ -30,10 +32,13 @@ def order(request):
                           + (order.allergy3 * price.allergy)
             order.total_price = total_price
             order.save()
-    else:
-        form = OrderForm()
+        return render(request, 'order.html', {
+            'form': form,
+            'total_price': total_price,
+            'order_id': order.id,
+        })
+    form = OrderForm()
     return render(request, 'order.html', {
         'form': form,
-        'total_price': total_price
-        }
-    )
+        'total_price': total_price,
+    })
