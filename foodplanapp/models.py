@@ -2,11 +2,12 @@ from django.contrib.auth.models import User
 from django.db import models
 
 ORDER_DURATION = [(3, "3 мес"), (12, "12 мес")]
-MENU_TYPE = [('classic', "Классическое меню"),
-             ('low_calorie', "Низкокалорийное меню"),
-             ('vegan', "Вегетарианское меню"),
-             ('keto', "Кето меню"),
-             ]
+MENU_TYPE = [
+    ("classic", "Классическое меню"),
+    ("low_calorie", "Низкокалорийное меню"),
+    ("vegan", "Вегетарианское меню"),
+    ("keto", "Кето меню"),
+]
 
 
 class Price(models.Model):
@@ -22,7 +23,7 @@ class Price(models.Model):
 
 class Order(models.Model):
     menu_type = models.CharField(
-        "Тип меню", choices=MENU_TYPE, max_length=100, default='classic'
+        "Тип меню", choices=MENU_TYPE, max_length=100, default="classic"
     )
     duration = models.IntegerField(
         "Срок подписки, мес", choices=ORDER_DURATION
@@ -74,6 +75,24 @@ class Dish(models.Model):
     active = models.BooleanField(
         "Активный",
         default=True,
+    )
+    menu_type = models.CharField(
+        "Тип меню",
+        choices=MENU_TYPE,
+        max_length=100,
+        default="classic",
+    )
+    allergy1 = models.BooleanField(
+        "Аллергия 1",
+        default=False,
+    )
+    allergy2 = models.BooleanField(
+        "Аллергия 2",
+        default=False,
+    )
+    allergy3 = models.BooleanField(
+        "Аллергия 3",
+        default=False,
     )
 
     class Meta:
