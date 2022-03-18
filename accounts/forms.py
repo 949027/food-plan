@@ -19,7 +19,7 @@ class LoginForm(forms.Form):
     )
 
 
-class RegisterationForm(UserCreationForm):
+class RegistrationForm(UserCreationForm):
     username = forms.CharField(
         label='Имя', 
         widget=forms.TextInput(attrs={'class': 'form-control'})

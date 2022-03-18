@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 
-from .forms import LoginForm, RegisterationForm
+from .forms import LoginForm, RegistrationForm
 
 
 class LoginUser(auth_views.LoginView):
@@ -34,7 +34,7 @@ class LogoutUser(auth_views.LogoutView):
 
 
 class UserCreateView(CreateView):
-    form_class = RegisterationForm
+    form_class = RegistrationForm
     template_name = 'registration.html'
 
     def __init__(self):
