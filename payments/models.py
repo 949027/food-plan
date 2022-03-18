@@ -4,12 +4,16 @@ from foodplanapp.models import Order
 
 
 class OrderPayment(models.Model):
-    payment_id = models.SlugField("ID платежа в Юкасса", max_length=100, unique=True)
+    payment_id = models.SlugField(
+        "ID платежа в Юкасса",
+        max_length=100,
+        unique=True
+    )
     order = models.ForeignKey(
         Order,
         verbose_name="Заказ к оплате",
         related_name="payments",
-	on_delete=models.CASCADE,
+        on_delete=models.CASCADE,
     )
     created_at = models.DateTimeField("Дата создания")
     description = models.CharField("Назначение платежа", max_length=100)
@@ -20,4 +24,4 @@ class OrderPayment(models.Model):
     is_paid = models.BooleanField("Оплачен?")
 
     def __str__(self):
-        return f"Платеж {self.payment_id} от {self.created_at}"
+        return f"Оплата заказа {self.order.id} от {self.created_at}"
