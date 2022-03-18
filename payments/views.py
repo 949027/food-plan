@@ -1,4 +1,5 @@
-from django.shortcuts import redirect, HttpResponse
+from django.shortcuts import redirect
+from django.urls import reverse
 from yookassa import Configuration, Payment
 from django.conf import settings
 import uuid
@@ -42,6 +43,11 @@ def payment(request, order_id):
 
 
 def complete_payment(request, order_id):
-    order_payment = Order.object.get(id=order_id).payments.first()
+    order_payment = Order.objects.get(id=order_id).payments.first()
+    Configuration.account_id = settings.SHOP_ID
+    Configuration.secret_key = settings.SHOP_TOKEN
     payment = Payment.find_one(order_payment.payment_id)
-    return HttpResponse(payment)
+    order_payment.status = payment.status
+    order_payment.is_paid = payment.paid
+    order_payment.save()
+    return redirect(reverse('profile'))
