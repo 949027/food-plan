@@ -1,8 +1,11 @@
-from django.shortcuts import redirect
-from django.shortcuts import HttpResponse
+from django.shortcuts import redirect, get_or_create, HttpResponse
 from yookassa import Configuration, Payment
 from django.conf import settings
 import uuid
+
+from .models import OrderPayment
+
+from foodplanapp import Order
 
 
 def payment(request, order_id):
@@ -15,14 +18,28 @@ def payment(request, order_id):
         },
         "confirmation": {
             "type": "redirect",
-            "return_url": "http://82.148.16.182/payment/complete/",
+            "return_url": f"http://82.148.16.182/payment/complete/{order_id}",
         },
         "capture": True,
         "description": f"Заказ №{order_id}",
         "metadata": {"order_id": order_id},
     }, uuid.uuid4())
+
+    OrderPayment.object.get_or_create(
+        payment_id=payment.id,
+        order=Order.object.get(order__id=order_id),
+        created_at=payment.created_at,
+        description=payment.description,
+        status=payment.status,
+        is_test=payment.test,
+        payment_amount=payment.amount.value,
+        payment_currency=payment.amount.currency,
+        is_paid=payment.paid,
+    )
     return redirect(payment.confirmation.confirmation_url)
 
 
-def complete_payment(request):
-    return HttpResponse(request)
+def complete_payment(request, order_id):
+    order_payment = Order.object.get(order__id=order_id).payments.first()
+    payment = Payment.find_one(order_payment.payment_id)
+    return HttpResponse(payment)
