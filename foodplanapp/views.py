@@ -65,9 +65,6 @@ def custom_receipt(request):
         filters["allergy3"] = order.allergy3
 
     filter_q = Q(**filters)
-    print(filter_q)
-
-    # queryset = Something.objects.exclude(filter_q)
 
     dish = (
         Dish.objects.filter(menu_type=order.menu_type)
