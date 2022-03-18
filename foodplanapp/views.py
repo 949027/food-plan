@@ -1,10 +1,12 @@
 from django.db.models import Q
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 from .forms import OrderForm
-from .models import Price, Dish, Dishitems, Order
+from .models import Price, Dish, Order
 
 
+@login_required
 def order(request):
     total_price = 0
     if request.method == "POST":
@@ -34,13 +36,21 @@ def order(request):
             )
             order.total_price = total_price
             order.save()
-    else:
-        form = OrderForm()
+        return render(
+            request, 
+            "order.html", 
+            {"form": form, "total_price": total_price, "order_id": order.id}
+        )
+
+    form = OrderForm()
     return render(
-        request, "order.html", {"form": form, "total_price": total_price}
+        request, 
+        "order.html", 
+        {"form": form, "total_price": total_price}
     )
 
 
+@login_required
 def custom_receipt(request):
     order = Order.objects.filter(user__id=1).first()
     filters = {}
