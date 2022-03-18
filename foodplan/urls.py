@@ -25,4 +25,5 @@ urlpatterns = [
     path('', render, kwargs={'template_name': 'index.html'}, name='start_page'),
     path('food/', include("foodplanapp.urls")),  # TODO: выбрать подходящий url вместо food
     path('user/', include("accounts.urls")),
+    path('payment/', include("payments.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
