@@ -55,14 +55,6 @@ def user_profile(request):
         .first()
     )
 
-    # dish = (
-    #     Dish.objects.prefetch_related("allergies")
-    #     .prefetch_related("dishitems")
-    #     .filter(menu_type=order[0].menu_type)
-    #     .exclude(allergies__in=allergies)
-    #     .order_by("?")
-    #     .first()
-    # )
     allergies = list(
         order.allergies.values(
             "name",
@@ -78,3 +70,45 @@ def user_profile(request):
             "allergies": allergies,
         },
     )
+
+
+@login_required
+def show_receipt(request):
+    if request.method == "GET":
+        order = Order.objects.prefetch_related("allergies").filter(
+            user__id=request.user.id
+        )
+
+        allergies = set(order.values_list("allergies", flat=True))
+
+        dish = (
+            Dish.objects.prefetch_related("allergies")
+            .prefetch_related("dishitems")
+            .filter(menu_type=order[0].menu_type, active=True)
+            .exclude(allergies__in=allergies)
+            .order_by("?")
+            .first()
+        )
+
+        dish_allergies = list(
+            dish.allergies.values(
+                "name",
+            )
+        )
+        dish_items = list(
+            dish.dishitems.values(
+                "ingredient",
+                "amount",
+                "measurement_unit",
+            )
+        )
+
+        return render(
+            request,
+            "accounts/receipt.html",
+            context={
+                "dish": dish,
+                "allergies": dish_allergies,
+                "dish_items": dish_items,
+            },
+        )
