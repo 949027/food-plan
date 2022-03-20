@@ -37,6 +37,10 @@ class Order(models.Model):
     allergy1 = models.BooleanField("Аллергия 1")
     allergy2 = models.BooleanField("Аллергия 2")
     allergy3 = models.BooleanField("Аллергия 3")
+    allergies = models.ManyToManyField(
+        "Allergies",
+        related_name="orders",
+    )
     promo_code = models.CharField(
         "Промокод", max_length=20, blank=True, null=True
     )
