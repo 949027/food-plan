@@ -49,6 +49,24 @@ class Order(models.Model):
         return f"Заказ №{self.id}"
 
 
+class Allergies(models.Model):
+    name = models.CharField(
+        "Название",
+        max_length=100,
+    )
+    description = models.TextField(
+        "Описание",
+        blank=True,
+    )
+
+    class Meta:
+        verbose_name = "аллергия"
+        verbose_name_plural = "аллергии"
+
+    def __str__(self):
+        return f"Аллергия на {self.name}"
+
+
 class Dish(models.Model):
     name = models.CharField(
         "Название",
@@ -83,17 +101,9 @@ class Dish(models.Model):
         default="classic",
         db_index=True,
     )
-    allergy1 = models.BooleanField(
-        "Аллергия 1",
-        default=False,
-    )
-    allergy2 = models.BooleanField(
-        "Аллергия 2",
-        default=False,
-    )
-    allergy3 = models.BooleanField(
-        "Аллергия 3",
-        default=False,
+    allergies = models.ManyToManyField(
+        "Allergies",
+        related_name="dishes",
     )
 
     class Meta:

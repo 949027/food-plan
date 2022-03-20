@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Order, Dish, Price, Dishitems
+from .models import Order, Dish, Price, Dishitems, Allergies
 
 
 class DishitemsInline(admin.TabularInline):
@@ -25,4 +25,9 @@ class DishAdmin(admin.ModelAdmin):
 
 @admin.register(Dishitems)
 class DishitemsAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Allergies)
+class AllergiesAdmin(admin.ModelAdmin):
     pass
