@@ -121,6 +121,7 @@ class Dish(models.Model):
 class Dishitems(models.Model):
     dish = models.ForeignKey(
         "Dish",
+        related_name="dishitems",
         on_delete=models.CASCADE,
         verbose_name="Рецепт",
     )
