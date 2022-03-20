@@ -110,8 +110,12 @@
                               {% if order.dessert %} Десерты<br> {% endif %}
                               {% if order.new_year_menu %} Новогоднее меню<br> {% endif %}
                           </h6>
-                            <a class="btn btn-outline-success foodplan_green foodplan__border_green" href="{% url 'order'%}">
-                              Оформить подписку
+                           {% if not order %}
+                              <a class="btn btn-outline-success foodplan_green foodplan__border_green" href="{% url 'order'%}">
+                                Оформить подписку
+                              </a>
+                            {% endif %}
+                            <a class="btn btn-outline-success foodplan_green foodplan__border_green" href="{% url 'show_receipt'%}">Показать блюдо</button>
                             </a>
                         </div>
                         <div class="col-md-12 col-lg-3 text-muted d-flex flex-column justify-content-between">
