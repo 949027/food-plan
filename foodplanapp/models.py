@@ -78,6 +78,7 @@ class Dish(models.Model):
     )
     image = models.ImageField(
         "Изображение",
+        upload_to="images/",
         null=True,
     )
     calories = models.FloatField(
