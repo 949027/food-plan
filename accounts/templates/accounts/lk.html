@@ -31,14 +31,14 @@
             </h4>
             <h2 class="text-center"><strong>Личный кабинет</strong></h2>
           </div>
-          
+
           <div class="card col-12 col-md-2 p-3 mb-3 d-flex flex-column align-items-center foodplan__shadow">
             <div class="position-relative">
               <img src="{% static 'img/test_avatar.png' %}" alt="" width="100" height="100" class="rounded-pill">
               <span class="badge rounded-circle position-absolute bottom-0 end-0 foodplan__bg_green avatar__plus"><a href="#"
                   class="link-dark text-decoration-none align-middle">+</a></span>
             </div>
-            <h3 class="card-title text-center">{{username}}</h3>
+            <h3 class="card-title text-center">{{ user.username }}</h3>
               <a class="btn btn-outline-success foodplan_green foodplan__border_green" id="logout" href="{% url 'logout'%}">
                 Выйти
               </a>
@@ -62,19 +62,24 @@
                         <label for="exampleInputEmail1" class="form-label">Имя</label>
                         <small><a href="#" class="link-dark foodplan_green">изменить</a></small>
                       </div>
-                    
-                      <input type="text" class="form-control" id="name">
+                      <input type="text" class="form-control" id="first_name" value="{{ user.first_name }}">
+                    </div>
+                    <div class="mb-3">
+                      <div class="d-flex align-items-center justify-content-between">
+                        <label for="exampleInputEmail1" class="form-label">Фамилия</label>
+                      </div>
+                      <input type="text" class="form-control" id="last_name" value="{{ user.last_name }}">
                     </div>
                     <div class="mb-3">
                       <label for="exampleInputEmail1" class="form-label">Email</label>
-                      <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+                      <input type="email" class="form-control" id="email" aria-describedby="emailHelp" value="{{ user.email }}">
                     </div>
                     <div class="mb-3">
                       <div class="d-flex align-items-center justify-content-between">
                         <label for="exampleInputPassword1" class="form-label">Пароль</label>
                         <small><a href="#" class="link-dark foodplan_green">изменить</a></small>
                       </div>
-                    
+
                       <input type="password" class="form-control" id="password">
                     </div>
                     <div class="mb-3">
@@ -95,40 +100,50 @@
                     <div class="col-10 col-md-10">
                       <div class="row">
                         <div class="col-12">
-                          <h2>Название подписки</h2>
+                          <h2>Подписка</h2>
                         </div>
                         <div class="col-md-12 col-lg-9">
-                          <h6>Описание подписки Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eius saepe ea nobis necessitatibus
-                            consectetur rem! Eligendi assumenda facere sint quibusdam dolorem quasi doloribus nemo, temporibus molestiae
-                            distinctio cum laboriosam sed. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eius saepe ea nobis
-                            necessitatibus consectetur rem! Eligendi
-                            assumenda facere sint quibusdam dolorem quasi doloribus nemo, temporibus molestiae distinctio cum laboriosam
-                            sed.</h6>
+                          <h6>В данной подписке выбраны следующие виды меню:
+                              {% if order.breakfast %} Завтраки<br> {% endif %}
+                              {% if order.lunch %} Обеды<br> {% endif %}
+                              {% if order.dinner %} Ужины<br> {% endif %}
+                              {% if order.dessert %} Десерты<br> {% endif %}
+                              {% if order.new_year_menu %} Новогоднее меню<br> {% endif %}
+                          </h6>
                             <a class="btn btn-outline-success foodplan_green foodplan__border_green" href="{% url 'order'%}">
                               Оформить подписку
                             </a>
                         </div>
                         <div class="col-md-12 col-lg-3 text-muted d-flex flex-column justify-content-between">
                           <div class="d-flex flex-row justify-content-between">
-                            <small>Персоны: </small><small>3</small>
+                            <small>Тип меню: </small><small>{{ order.get_menu_type_display }}</small>
                           </div>
                           <div class="d-flex flex-row justify-content-between">
-                            <small>Аллергии: </small><small>нет</small>
+                            <small>Персоны: </small><small>{{ order.persons_amount }}</small>
                           </div>
                           <div class="d-flex flex-row justify-content-between">
-                            <small>Калории: </small><small>1400</small>
+                            <small>Аллергии: </small>
+                            <small>
+                              {% if allergies %}
+                                {% for allergy in allergies %}
+                                    {{ allergy.name }}<br>
+                                {% endfor %}
+                              {% else %}
+                                нет
+                              {% endif %}
+                            </small>
                           </div>
                           <div class="d-flex flex-row justify-content-between">
-                            <small>Кол-во приёмов пищи: </small><small>4</small>
+                            <small>Срок подписки: </small><small>{{ order.duration }} мес</small>
                           </div>
-                          
+
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              
+
           </div>
         </div>
       </div>
