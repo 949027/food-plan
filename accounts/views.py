@@ -93,7 +93,7 @@ def show_receipt(request):
 
         allergies = list(order.values_list("allergies", flat=True))
 
-        if allergies[0] is not None:
+        if allergies != [None]:
             dish = (
                 Dish.objects.prefetch_related("allergies")
                 .prefetch_related("dishitems")
