@@ -20,20 +20,21 @@ def get_file_name(url):
     return file_name
 
 
-def download_image(url, filename, folder="images/"):
+def download_image(url, filename, folder="media/images/"):
     response = requests.get(url)
     response.raise_for_status()
     file_path = os.path.join(folder, filename)
+    file_path_for_bd = os.path.join("images/", filename)
     with open(file_path, "wb") as file:
         file.write(response.content)
 
-    return file_path
+    return file_path_for_bd
 
 
 def parse_receipt_pages(response):
     receipts = []
 
-    images_folder_name = os.path.join(os.getcwd(), "images/")
+    images_folder_name = os.path.join(os.getcwd(), "media/images/")
     os.makedirs(images_folder_name, exist_ok=True)
 
     soup = BeautifulSoup(response.text, "lxml")
