@@ -4,13 +4,14 @@ from django.db.models import Count, Sum, Max, Min
 from django.db.models.functions import Trunc
 
 from .models import OrderPayment, OrderPaymentSummary
+from foodplanapp.models import MENU_TYPE
 
 
 @admin.register(OrderPayment)
 class PaymentAdmin(admin.ModelAdmin):
     list_display = ('order', 'is_paid', 'status', 'created_at',
                     'total_cost', 'order_menu_type', 'payment_id', )
-    list_filter = ('is_paid', 'status', 'created_at', )
+    list_filter = ('is_paid', 'status', 'created_at', 'order__menu_type',)
 
     def order_menu_type(self, obj):
         return f"{obj.order.get_menu_type_display()}"
@@ -29,11 +30,19 @@ def get_next_in_date_hierarchy(request, date_hierarchy):
     return 'month'
 
 
+def calc_percents(amount, total):
+    if total == 0 or amount == 0:
+        return 0
+    return amount * 100 / total
+
+
 @admin.register(OrderPaymentSummary)
 class OrderPaymentAdmin(admin.ModelAdmin):
     change_list_template = 'admin/payments_summary_change_list.html'
     date_hierarchy = 'created_at'
-
+    
+    list_filter = ('order__menu_type',)
+    
     def changelist_view(self, request, extra_context=None):
         response = super().changelist_view(
             request,
@@ -50,12 +59,23 @@ class OrderPaymentAdmin(admin.ModelAdmin):
         }
         response.context_data['summary'] = list(
             qs
+            .values('order__menu_type')
             .annotate(**metrics)
             .order_by('-total_sales')
         )
+        
         response.context_data['summary_total'] = dict(
             qs.aggregate(**metrics)
         )
+        #TODO: костыль get_menu_type_display не заработал ???
+        menu_types = dict(MENU_TYPE)
+        for item in response.context_data["summary"]:
+            key = item["order__menu_type"]
+            item["order__menu_type"] = menu_types[key]
+            item["percent"] = calc_percents(
+                item["total_sales"],
+                response.context_data['summary_total']["total_sales"]
+            ) 
 
         period = get_next_in_date_hierarchy(request, self.date_hierarchy)
         response.context_data['period'] = period

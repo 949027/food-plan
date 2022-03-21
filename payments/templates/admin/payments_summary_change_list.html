@@ -56,12 +56,17 @@
         </th>
         <th>
           <div class="text">
-            <a href="#">Количество покупок/a>
+            <a href="#">Количество покупок</a>
           </div>
         </th>
         <th>
           <div class="text">
             <a href="#">Сумма покупок</a>
+          </div>
+        </th>
+        <th>
+          <div class="text">
+            <a href="#">Процент от общей суммы</a>
           </div>
         </th>
       </tr>
@@ -70,9 +75,14 @@
     <tbody>
       {% for row in summary %}
         <tr class="{% cycle 'row1' 'row2' %}">
-          <td> Платная подписка </td>
+          <td> {{ row.order__menu_type}}  </td>
           <td> {{ row.total | intcomma }} </td>
           <td> {{ row.total_sales | default:0 | intcomma }} руб.</td>
+          <td>
+            <strong>
+              {{ row.percent | floatformat:2}}%
+            </strong>
+          </td>
         </tr>
       {% endfor %}
     </tbody>
@@ -81,6 +91,7 @@
       <td> Total </td>
       <td> {{ summary_total.total | intcomma }} </td>
       <td> {{ summary_total.total_sales | default:0 }} руб. </td>
+      <td> 100% </td>
     </tr>
   </table>
 
