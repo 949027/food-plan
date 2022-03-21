@@ -41,7 +41,7 @@ class Order(models.Model):
         related_name="orders",
     )
     promo_code = models.CharField(
-        'Промокод',
+        "Промокод",
         null=True,
         blank=True,
         max_length=20,
@@ -109,7 +109,7 @@ class Dish(models.Model):
         db_index=True,
     )
     allergies = models.ManyToManyField(
-        "Allergies",
+        "Аллергии",
         related_name="dishes",
     )
 
