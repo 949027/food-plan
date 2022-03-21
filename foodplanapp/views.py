@@ -49,63 +49,17 @@ def order(request):
             order.total_price = total_price
             order.save()
         return render(
-            request, 
-            "order.html", 
+            request,
+            "order.html",
             {
                 "form": form,
                 "total_price": total_price,
                 "order_id": order.id,
-                "promo_code": order.promo_code
+                "promo_code": order.promo_code,
             }
         )
 
     form = OrderForm()
     return render(
-        request, 
-        "order.html", 
-        {"form": form, "total_price": total_price}
-    )
-
-
-@login_required
-def custom_receipt(request):
-    order = Order.objects.filter(user__id=1).first()
-    filters = {}
-    if order.allergy1:
-        filters["allergy1"] = order.allergy1
-    elif order.allergy2:
-        filters["allergy2"] = order.allergy2
-    elif order.allergy3:
-        filters["allergy3"] = order.allergy3
-    if order.allergy1 and order.allergy2:
-        filters["allergy1"] = order.allergy1
-        filters["allergy2"] = order.allergy2
-    if order.allergy1 and order.allergy3:
-        filters["allergy1"] = order.allergy1
-        filters["allergy3"] = order.allergy3
-    if order.allergy2 and order.allergy3:
-        filters["allergy2"] = order.allergy2
-        filters["allergy3"] = order.allergy3
-    if order.allergy1 and order.allergy2 and order.allergy3:
-        filters["allergy1"] = order.allergy1
-        filters["allergy2"] = order.allergy2
-        filters["allergy3"] = order.allergy3
-
-    filter_q = Q(**filters)
-
-    dish = (
-        Dish.objects.filter(menu_type=order.menu_type)
-        .exclude(filter_q)
-        .order_by("?")
-        .first()
-    )
-
-    print(dish)
-
-    return render(
-        request,
-        template_name="lk.html",
-        context={
-            "dish": dish,
-        },
+        request, "order.html", {"form": form, "total_price": total_price}
     )

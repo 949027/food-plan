@@ -36,6 +36,10 @@ class Order(models.Model):
     allergy1 = models.BooleanField("Аллергия 1")
     allergy2 = models.BooleanField("Аллергия 2")
     allergy3 = models.BooleanField("Аллергия 3")
+    allergies = models.ManyToManyField(
+        "Allergies",
+        related_name="orders",
+    )
     promo_code = models.CharField(
         'Промокод',
         null=True,
@@ -51,6 +55,24 @@ class Order(models.Model):
         return f"{self.user}"
 
 
+class Allergies(models.Model):
+    name = models.CharField(
+        "Название",
+        max_length=100,
+    )
+    description = models.TextField(
+        "Описание",
+        blank=True,
+    )
+
+    class Meta:
+        verbose_name = "аллергия"
+        verbose_name_plural = "аллергии"
+
+    def __str__(self):
+        return f"Аллергия на {self.name}"
+
+
 class Dish(models.Model):
     name = models.CharField(
         "Название",
@@ -58,6 +80,7 @@ class Dish(models.Model):
     )
     image = models.ImageField(
         "Изображение",
+        upload_to="images/",
         null=True,
     )
     calories = models.FloatField(
@@ -85,17 +108,9 @@ class Dish(models.Model):
         default="classic",
         db_index=True,
     )
-    allergy1 = models.BooleanField(
-        "Аллергия 1",
-        default=False,
-    )
-    allergy2 = models.BooleanField(
-        "Аллергия 2",
-        default=False,
-    )
-    allergy3 = models.BooleanField(
-        "Аллергия 3",
-        default=False,
+    allergies = models.ManyToManyField(
+        "Allergies",
+        related_name="dishes",
     )
 
     class Meta:
@@ -109,6 +124,7 @@ class Dish(models.Model):
 class Dishitems(models.Model):
     dish = models.ForeignKey(
         "Dish",
+        related_name="dishitems",
         on_delete=models.CASCADE,
         verbose_name="Рецепт",
     )
