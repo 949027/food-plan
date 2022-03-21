@@ -33,9 +33,6 @@ class Order(models.Model):
     dessert = models.BooleanField("Десерты")
     new_year_menu = models.BooleanField("Новогоднее меню")
     persons_amount = models.IntegerField("Количество персон")
-    allergy1 = models.BooleanField("Аллергия 1")
-    allergy2 = models.BooleanField("Аллергия 2")
-    allergy3 = models.BooleanField("Аллергия 3")
     allergies = models.ManyToManyField(
         "Allergies",
         related_name="orders",
@@ -46,7 +43,7 @@ class Order(models.Model):
         blank=True,
         max_length=20,
     )
-    total_price = models.IntegerField("Стоимость подписки")
+    total_price = models.IntegerField("Стоимость подписки", null=True)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, verbose_name="Пользователь"
     )

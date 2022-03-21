@@ -16,6 +16,7 @@ def order(request):
             order = form.save(commit=False)
             price = Price.objects.first()
             order.user = request.user
+
             if order.menu_type == "classic":
                 start_price = order.duration * price.classic_menu
             elif order.menu_type == "low_calorie":
@@ -24,6 +25,8 @@ def order(request):
                 start_price = order.duration * price.vegan_menu
             elif order.menu_type == "keto":
                 start_price = order.duration * price.keto_menu
+            order.save()
+            form.save_m2m()
             total_price = sum([
                 start_price,
                 (order.breakfast * price.meal),
@@ -31,9 +34,7 @@ def order(request):
                 (order.dinner * price.meal),
                 (order.dessert * price.meal),
                 (order.new_year_menu * price.new_year_menu),
-                (order.allergy1 * price.allergy),
-                (order.allergy2 * price.allergy),
-                (order.allergy3 * price.allergy),
+                (order.allergies.count() * price.allergy),
             ])
             if order.promo_code:
                 if Promocode.objects.filter(code=order.promo_code.upper()):
@@ -48,16 +49,17 @@ def order(request):
             Order.objects.all().delete()
             order.total_price = total_price
             order.save()
-        return render(
-            request,
-            "order.html",
-            {
-                "form": form,
-                "total_price": total_price,
-                "order_id": order.id,
-                "promo_code": order.promo_code,
-            }
-        )
+
+            return render(
+                request,
+                "order.html",
+                {
+                    "form": form,
+                    "total_price": total_price,
+                    "order_id": order.id,
+                    "promo_code": order.promo_code,
+                }
+            )
 
     form = OrderForm()
     return render(

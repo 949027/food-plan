@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Order
+from .models import Order, Allergies
 
 
 class OrderForm(forms.ModelForm):
@@ -16,10 +16,12 @@ class OrderForm(forms.ModelForm):
             'dinner',
             'new_year_menu',
             'persons_amount',
-            'allergy1',
-            'allergy2',
-            'allergy3',
+            'allergies',
             'promo_code',
         )
 
-
+    allergies = forms.ModelMultipleChoiceField(
+        required=False,
+        queryset=Allergies.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+    )
