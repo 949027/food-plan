@@ -10,7 +10,7 @@ class DishitemsInline(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id', 'total_price', 'user',)
 
 
 @admin.register(Price)
