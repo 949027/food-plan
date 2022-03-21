@@ -22,9 +22,10 @@ class LoginUser(auth_views.LoginView):
             password = form.cleaned_data["password"]
 
             user = authenticate(request, username=username, password=password)
-            if user:
+            if user is not None:
                 login(request, user)
                 return redirect("profile")
+            return redirect("login")
 
 
 class LogoutUser(auth_views.LogoutView):
