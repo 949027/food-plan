@@ -112,7 +112,9 @@
                               </div>
                             {% endfor %}
                           {% else %}
-                            Аллергий нет
+                            <div class="d-flex flex-row justify-content-between">
+                              <small>Аллергия на: </small><small>нет </small>
+                            </div>
                           {% endif %}
                           <div class="d-flex flex-row justify-content-between">
                             <small>Срок подписки: </small><small>{{ order.duration }} мес</small>
