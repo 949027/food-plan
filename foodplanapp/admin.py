@@ -31,3 +31,7 @@ class DishitemsAdmin(admin.ModelAdmin):
 @admin.register(Allergies)
 class AllergiesAdmin(admin.ModelAdmin):
     pass
+
+@admin.register(Promocode)
+class PromocodeAdmin(admin.ModelAdmin):
+    pass
