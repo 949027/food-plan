@@ -109,7 +109,7 @@ class Dish(models.Model):
         db_index=True,
     )
     allergies = models.ManyToManyField(
-        "Аллергии",
+        "Allergies",
         related_name="dishes",
     )
 
