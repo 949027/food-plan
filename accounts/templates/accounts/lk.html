@@ -102,23 +102,18 @@
                         <div class="col-12">
                           <h2>Подписка</h2>
                         </div>
+                        {% if order %}
                         <div class="col-md-12 col-lg-9">
-                          <h6>В данной подписке выбраны следующие виды меню:
+                          <h6>В данной подписке выбраны следующие виды меню:<br>
                               {% if order.breakfast %} Завтраки<br> {% endif %}
                               {% if order.lunch %} Обеды<br> {% endif %}
                               {% if order.dinner %} Ужины<br> {% endif %}
                               {% if order.dessert %} Десерты<br> {% endif %}
                               {% if order.new_year_menu %} Новогоднее меню<br> {% endif %}
                           </h6>
-                           {% if not order %}
-                              <a class="btn btn-outline-success foodplan_green foodplan__border_green" href="{% url 'order'%}">
-                                Оформить подписку
-                              </a>
-                            {% else %}
-                              <a class="btn btn-outline-success foodplan_green foodplan__border_green" href="{% url 'show_receipt'%}">
-                                Показать блюдо
-                              </a>
-                            {% endif %}
+                          <a class="btn btn-outline-success foodplan_green foodplan__border_green" href="{% url 'show_receipt'%}">
+                            Показать блюдо
+                          </a>
                         </div>
                         <div class="col-md-12 col-lg-3 text-muted d-flex flex-column justify-content-between">
                           <div class="d-flex flex-row justify-content-between">
@@ -132,7 +127,7 @@
                             <small>
                               {% if allergies %}
                                 {% for allergy in allergies %}
-                                    {{ allergy.name }}<br>
+                                    {{ allergy.name }},
                                 {% endfor %}
                               {% else %}
                                 нет
@@ -142,8 +137,13 @@
                           <div class="d-flex flex-row justify-content-between">
                             <small>Срок подписки: </small><small>{{ order.duration }} мес</small>
                           </div>
-
+                          {% else %}
+                            <a class="btn btn-outline-success foodplan_green foodplan__border_green" href="{% url 'order'%}">
+                              Оформить подписку
+                            </a>
+                          {% endif %}
                         </div>
+
                       </div>
                     </div>
                   </div>
