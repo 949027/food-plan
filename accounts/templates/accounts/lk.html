@@ -138,9 +138,11 @@
                             <small>Срок подписки: </small><small>{{ order.duration }} мес</small>
                           </div>
                           {% else %}
-                            <a class="btn btn-outline-success foodplan_green foodplan__border_green" href="{% url 'order'%}">
-                              Оформить подписку
-                            </a>
+                            <div class="col-md-12 col-lg-9">
+                              <a class="btn btn-outline-success foodplan_green foodplan__border_green" href="{% url 'order'%}">
+                                Оформить подписку
+                              </a>
+                            </div>
                           {% endif %}
                         </div>
 
