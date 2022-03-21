@@ -158,7 +158,7 @@ class Dishitems(models.Model):
 
 
 class Promocode(models.Model):
-    code = models.CharField("Код", max_length=20)
+    code = models.CharField("Код", max_length=20, unique=True)
     valid_from = models.DateField("Действует с")
     valid_to = models.DateField("Действует до")
     discount = models.IntegerField("Размер скидки, руб")

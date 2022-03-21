@@ -39,12 +39,14 @@ def order(request):
                 (order.allergies.count() * price.allergy),
             ])
             if order.promo_code:
-                if Promocode.objects.filter(code=order.promo_code.upper()):
-                    promo_code = Promocode.objects.get(
-                        code=order.promo_code.upper()
-                    )
-                    if promo_code.valid_from < date.today() < promo_code.valid_to:
+                promo_codes = Promocode.objects.filter(
+                    code=order.promo_code.upper())
+                if promo_codes.exists():
+                    promo_code = promo_codes.first()
+                    if promo_code.valid_from <= date.today() <= promo_code.valid_to:
                         total_price -= promo_code.discount
+                    else:
+                        order.promo_code = None
                 else:
                     order.promo_code = None
 
