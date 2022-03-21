@@ -11,7 +11,7 @@ from foodplanapp.models import MENU_TYPE
 class PaymentAdmin(admin.ModelAdmin):
     list_display = ('order', 'is_paid', 'status', 'created_at',
                     'total_cost', 'order_menu_type', 'payment_id', )
-    list_filter = ('is_paid', 'status', 'created_at', )
+    list_filter = ('is_paid', 'status', 'created_at', 'order__menu_type',)
 
     def order_menu_type(self, obj):
         return f"{obj.order.get_menu_type_display()}"
@@ -40,7 +40,9 @@ def calc_percents(amount, total):
 class OrderPaymentAdmin(admin.ModelAdmin):
     change_list_template = 'admin/payments_summary_change_list.html'
     date_hierarchy = 'created_at'
-
+    
+    list_filter = ('order__menu_type',)
+    
     def changelist_view(self, request, extra_context=None):
         response = super().changelist_view(
             request,
