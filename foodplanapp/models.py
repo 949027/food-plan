@@ -116,6 +116,7 @@ class Dish(models.Model):
     allergies = models.ManyToManyField(
         "Allergies",
         related_name="dishes",
+        blank=True,
     )
 
     class Meta:
