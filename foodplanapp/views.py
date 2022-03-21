@@ -20,24 +20,27 @@ def order(request):
             Order.objects.filter(user=order.user).delete()
 
             if order.menu_type == "classic":
-                start_price = order.duration * price.classic_menu
+                start_price = price.classic_menu
             elif order.menu_type == "low_calorie":
-                start_price = order.duration * price.low_calorie_menu
+                start_price = price.low_calorie_menu
             elif order.menu_type == "vegan":
-                start_price = order.duration * price.vegan_menu
+                start_price = price.vegan_menu
             elif order.menu_type == "keto":
-                start_price = order.duration * price.keto_menu
+                start_price = price.keto_menu
             order.save()
             form.save_m2m()
-            total_price = sum([
-                start_price,
-                (order.breakfast * price.meal),
-                (order.lunch * price.meal),
-                (order.dinner * price.meal),
-                (order.dessert * price.meal),
-                (order.new_year_menu * price.new_year_menu),
-                (order.allergies.count() * price.allergy),
-            ])
+            total_price = (
+                order.duration * sum([
+                    start_price,
+                    (order.breakfast * price.meal),
+                    (order.lunch * price.meal),
+                    (order.dinner * price.meal),
+                    (order.dessert * price.meal),
+                    (order.allergies.count() * price.allergy),
+                ]) - sum([
+                    order.new_year_menu * price.new_year_menu,
+                ])
+            )
             if order.promo_code:
                 promo_codes = Promocode.objects.filter(
                     code=order.promo_code.upper())
