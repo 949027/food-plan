@@ -37,7 +37,7 @@ def order(request):
                     (order.dinner * price.meal),
                     (order.dessert * price.meal),
                     (order.allergies.count() * price.allergy),
-                ]) - sum([
+                ]) + sum([
                     order.new_year_menu * price.new_year_menu,
                 ])
             )
