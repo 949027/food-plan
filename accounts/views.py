@@ -83,34 +83,48 @@ def user_profile(request):
 
 @login_required
 def show_receipt(request):
+    dish_allergies = []
+    dish_items = []
+
     if request.method == "GET":
         order = Order.objects.prefetch_related("allergies").filter(
             user__id=request.user.id
         )
 
-        allergies = set(order.values_list("allergies", flat=True))
+        allergies = list(order.values_list("allergies", flat=True))
 
-        dish = (
-            Dish.objects.prefetch_related("allergies")
-            .prefetch_related("dishitems")
-            .filter(menu_type=order[0].menu_type, active=True)
-            .exclude(allergies__in=allergies)
-            .order_by("?")
-            .first()
-        )
+        if allergies[0] is not None:
+            dish = (
+                Dish.objects.prefetch_related("allergies")
+                .prefetch_related("dishitems")
+                .filter(menu_type=order[0].menu_type, active=True)
+                .exclude(allergies__in=allergies)
+                .order_by("?")
+                .first()
+            )
 
-        dish_allergies = list(
-            dish.allergies.values(
-                "name",
+            if dish:
+                dish_allergies = list(
+                    dish.allergies.values(
+                        "name",
+                    )
+                )
+        else:
+            dish = (
+                Dish.objects.filter(menu_type=order[0].menu_type, active=True)
+                .prefetch_related("dishitems")
+                .order_by("?")
+                .first()
             )
-        )
-        dish_items = list(
-            dish.dishitems.values(
-                "ingredient",
-                "amount",
-                "measurement_unit",
+
+        if dish:
+            dish_items = list(
+                dish.dishitems.values(
+                    "ingredient",
+                    "amount",
+                    "measurement_unit",
+                )
             )
-        )
 
         return render(
             request,
