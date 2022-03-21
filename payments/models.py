@@ -9,10 +9,10 @@ class OrderPayment(models.Model):
         max_length=100,
         unique=True
     )
-    order = models.OneToOneField(
+    order = models.ForeignKey(
         Order,
         verbose_name="Заказ к оплате",
-        related_name="payment",
+        related_name="payments",
         on_delete=models.CASCADE,
     )
     created_at = models.DateTimeField("Дата создания")

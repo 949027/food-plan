@@ -52,7 +52,7 @@ class UserCreateView(CreateView):
 def user_profile(request):
     order = (
         Order.objects.prefetch_related("allergies")
-        .filter(user__id=request.user.id, payment__is_paid=True)
+        .filter(user__id=request.user.id)
         .first()
     )
 
