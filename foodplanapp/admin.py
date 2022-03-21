@@ -10,7 +10,7 @@ class DishitemsInline(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'total_price', 'user',)
+    list_display = ('id', 'total_price', 'user', 'menu_type',)
 
 
 @admin.register(Price)
