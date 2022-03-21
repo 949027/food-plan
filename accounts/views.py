@@ -56,7 +56,7 @@ def user_profile(request):
         .first()
     )
 
-    if order:
+    if order and order.payments.filter(is_paid=True).exists():
         allergies = list(
             order.allergies.values(
                 "name",
