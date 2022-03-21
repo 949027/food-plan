@@ -55,21 +55,30 @@ def user_profile(request):
         .first()
     )
 
-    allergies = list(
-        order.allergies.values(
-            "name",
+    if order:
+        allergies = list(
+            order.allergies.values(
+                "name",
+            )
         )
-    )
 
-    return render(
-        request,
-        "accounts/lk.html",
-        context={
-            "user": request.user,
-            "order": order,
-            "allergies": allergies,
-        },
-    )
+        return render(
+            request,
+            "accounts/lk.html",
+            context={
+                "user": request.user,
+                "order": order,
+                "allergies": allergies,
+            },
+        )
+    else:
+        return render(
+            request,
+            "accounts/lk.html",
+            context={
+                "user": request.user,
+            },
+        )
 
 
 @login_required
