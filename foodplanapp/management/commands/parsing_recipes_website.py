@@ -4,7 +4,7 @@ import requests
 
 from bs4 import BeautifulSoup
 from django.core.management.base import BaseCommand
-from urllib.parse import urljoin, urlparse, unquote
+from urllib.parse import urlparse, unquote
 
 from foodplanapp.models import (
     Dish,
