@@ -98,7 +98,7 @@ class OrderPaymentAdmin(admin.ModelAdmin):
             'total': x['total'] or 0,
             'pct': \
                round((x['total'] or 0) / high * 100)
-               if high > low else 0,
+               if high >= low else 0,
         } for x in summary_over_time]
         return response
 

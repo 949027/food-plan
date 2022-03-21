@@ -19,6 +19,10 @@ class Price(models.Model):
     new_year_menu = models.IntegerField("Доплата за новогоднее меню, руб")
     allergy = models.IntegerField("Доплата за гипоаллергенное меню, руб")
 
+    class Meta:
+        verbose_name = "цена"
+        verbose_name_plural = "цены"
+
 
 class Order(models.Model):
     menu_type = models.CharField(
@@ -48,8 +52,12 @@ class Order(models.Model):
         User, on_delete=models.CASCADE, verbose_name="Пользователь"
     )
 
+    class Meta:
+        verbose_name = "Заказ"
+        verbose_name_plural = "Заказы"
+
     def __str__(self):
-        return f"{self.user}"
+        return f"Заказ №{self.id} для {self.user}"
 
 
 class Allergies(models.Model):
