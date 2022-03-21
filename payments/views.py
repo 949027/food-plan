@@ -17,7 +17,7 @@ from .models import OrderPayment
 @login_required
 def payment(request, order_id):
     order = get_object_or_404(Order, id=order_id)
-    if order.payments.filter(is_paid=True).exists():
+    if order.payment.is_paid:
         return HttpResponse(f"Заказ {order_id} уже оплачен")
     
     return_url = urljoin(
@@ -61,7 +61,7 @@ def payment(request, order_id):
 
 @login_required
 def complete_payment(request, order_id):
-    order_payment = Order.objects.get(id=order_id).payments.order_by("-created_at").first()
+    order_payment = OrderPayment.objects.get(order__id=order_id)
     
     Configuration.account_id = settings.SHOP_ID
     Configuration.secret_key = settings.SHOP_TOKEN
