@@ -46,7 +46,7 @@ def order(request):
                 else:
                     order.promo_code = None
 
-            Order.objects.all().delete()
+            Order.objects.filter(user=order.user).delete()
             order.total_price = total_price
             order.save()
 
