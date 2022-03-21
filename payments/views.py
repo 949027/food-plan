@@ -61,7 +61,7 @@ def payment(request, order_id):
 
 @login_required
 def complete_payment(request, order_id):
-    order_payment = Order.objects.get(id=order_id).payments.first()
+    order_payment = Order.objects.get(id=order_id).payments.order_by("-created_at").first()
     
     Configuration.account_id = settings.SHOP_ID
     Configuration.secret_key = settings.SHOP_TOKEN
