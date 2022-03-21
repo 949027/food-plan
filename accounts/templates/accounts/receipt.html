@@ -43,7 +43,7 @@
                 Выйти
               </a>
           </div>
-
+          {% if dish %}
           <div class="card col-12 col-md-10 p-3 mb-3 foodplan__shadow">
               <div class="tab-content mt-2">
                 <div class="tab-pane fade show active" id="data">
@@ -72,14 +72,21 @@
                       </table>
                     </div>
                     <div class="mb-3">
-                      <b>Наличие аллергии в блюде на:</b><br>
-                        {% for allergy in allergies %}
-                          {{ allergy.name }}<br>
-                        {% endfor %}
+                      <b>Наличие аллергии в блюде:</b><br>
+                       {% if allergies %}
+                         {% for allergy in allergies %}
+                           {{ allergy.name }}<br>
+                         {% endfor %}
+                       {% else %}
+                          отсутствуют
+                       {% endif %}
                     </div>
                 </div>
               </div>
           </div>
+          {% else %}
+            <p>рецепт не найден</p>
+          {% endif %}
         </div>
       </div>
     </section>
