@@ -23,5 +23,16 @@ class OrderPayment(models.Model):
     payment_currency = models.CharField("Валюта платежа", max_length=10)
     is_paid = models.BooleanField("Оплачен?")
 
+    class Meta:
+        verbose_name = "Платеж"
+        verbose_name_plural = "Платежи"
+
     def __str__(self):
         return f"Оплата заказа {self.order.id} от {self.created_at}"
+
+
+class OrderPaymentSummary(OrderPayment):
+    class Meta:
+        proxy = True
+        verbose_name = 'Отчёт по платежам'
+        verbose_name_plural = 'Отчеты по платежам'
