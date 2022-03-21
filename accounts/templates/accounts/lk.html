@@ -86,7 +86,7 @@
                           <h2>Подписка</h2>
                         </div>
                         {% if order %}
-                        <div class="col-md-12 col-lg-9">
+                        <div class="col-md-12 col-lg-7">
                           <h6>В данной подписке выбраны следующие виды меню:<br>
                               {% if order.breakfast %} Завтраки<br> {% endif %}
                               {% if order.lunch %} Обеды<br> {% endif %}
@@ -98,25 +98,22 @@
                             Показать блюдо
                           </a>
                         </div>
-                        <div class="col-md-12 col-lg-3 text-muted d-flex flex-column justify-content-between">
+                        <div class="col-md-12 col-lg-5 text-muted d-flex flex-column justify-content-between">
                           <div class="d-flex flex-row justify-content-between">
                             <small>Тип меню: </small><small>{{ order.get_menu_type_display }}</small>
                           </div>
                           <div class="d-flex flex-row justify-content-between">
                             <small>Персоны: </small><small>{{ order.persons_amount }}</small>
                           </div>
-                          <div class="d-flex flex-row justify-content-between">
-                            <small>Аллергии: </small>
-                            <small>
-                              {% if allergies %}
-                                {% for allergy in allergies %}
-                                    {{ allergy.name }},
-                                {% endfor %}
-                              {% else %}
-                                нет
-                              {% endif %}
-                            </small>
-                          </div>
+                          {% if allergies %}
+                            {% for allergy in allergies %}
+                              <div class="d-flex flex-row justify-content-between">
+                                <small>Аллергия на: </small><small>{{ allergy.name }} </small>
+                              </div>
+                            {% endfor %}
+                          {% else %}
+                            Аллергий нет
+                          {% endif %}
                           <div class="d-flex flex-row justify-content-between">
                             <small>Срок подписки: </small><small>{{ order.duration }} мес</small>
                           </div>
