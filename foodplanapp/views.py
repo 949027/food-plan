@@ -17,6 +17,8 @@ def order(request):
             price = Price.objects.first()
             order.user = request.user
 
+            Order.objects.filter(user=order.user).delete()
+
             if order.menu_type == "classic":
                 start_price = order.duration * price.classic_menu
             elif order.menu_type == "low_calorie":
@@ -46,7 +48,6 @@ def order(request):
                 else:
                     order.promo_code = None
 
-            Order.objects.filter(user=order.user).delete()
             order.total_price = total_price
             order.save()
 
