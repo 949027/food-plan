@@ -21,3 +21,5 @@ class OrderForm(forms.ModelForm):
             'allergy3',
             'promo_code',
         )
+
+

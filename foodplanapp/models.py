@@ -18,7 +18,6 @@ class Price(models.Model):
     meal = models.IntegerField("Доплата за каждый прием пищи, руб")
     new_year_menu = models.IntegerField("Доплата за новогоднее меню, руб")
     allergy = models.IntegerField("Доплата за гипоаллергенное меню, руб")
-    promo_code = models.IntegerField("Скидка за промокод, руб")
 
 
 class Order(models.Model):
@@ -38,7 +37,10 @@ class Order(models.Model):
     allergy2 = models.BooleanField("Аллергия 2")
     allergy3 = models.BooleanField("Аллергия 3")
     promo_code = models.CharField(
-        "Промокод", max_length=20, blank=True, null=True
+        'Промокод',
+        null=True,
+        blank=True,
+        max_length=20,
     )
     total_price = models.IntegerField("Стоимость подписки")
     user = models.ForeignKey(
@@ -46,7 +48,7 @@ class Order(models.Model):
     )
 
     def __str__(self):
-        return f"Заказ №{self.id}"
+        return f"{self.user}"
 
 
 class Dish(models.Model):
@@ -131,3 +133,17 @@ class Dishitems(models.Model):
 
     def __str__(self):
         return self.ingredient
+
+
+class Promocode(models.Model):
+    code = models.CharField("Код", max_length=20)
+    valid_from = models.DateField("Действует с")
+    valid_to = models.DateField("Действует до")
+    discount = models.IntegerField("Размер скидки, руб")
+
+    class Meta:
+        verbose_name = "Промокод"
+        verbose_name_plural = "Промокоды"
+
+    def __str__(self):
+        return self.code
