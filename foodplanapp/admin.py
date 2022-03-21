@@ -26,3 +26,8 @@ class DishAdmin(admin.ModelAdmin):
 @admin.register(Dishitems)
 class DishitemsAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(Allergies)
+class AllergiesAdmin(admin.ModelAdmin):
+    pass
